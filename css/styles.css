@@ -45,6 +45,10 @@ p {
     color: #eee;
 }
 
+a {
+    text-decoration: none;
+}
+
 /* ---- Layout Rules ---- */
 main {
     margin: 10vh 1em 10vh;
@@ -64,10 +68,16 @@ section {
 /* ---- Module Rules ---- */
 
 /* Navigation Styles*/
+.navbar__menu {
+    margin: 0 auto;
+}
 .navbar__menu ul {
     padding-left: 0;
     margin: 0;
-    text-align: right;
+    /* text-align: right; */
+    text-align: center;
+    display: flex;
+    flex-wrap: nowrap;
 }
 
 .navbar__menu li {
@@ -75,19 +85,31 @@ section {
 }
 
 .navbar__menu .menu__link {
-    display: block;
-    padding: 1em;
+    /* display: block; */
+    /* padding: 1em; */
     font-weight: bold;
     text-decoration: none;
     color: #000;
+    flex: 1 100%;
 }
 
-.navbar__menu .menu__link:hover {
+.menu__link a {
+    display: block;;
+    padding: 1em 0;
+    color: #000;
+}
+
+/* .navbar__menu .menu__link:hover {
+    background: #333;
+    color: #fff;
+    transition: ease 0.3s all;
+} */
+
+.menu__link a:hover {
     background: #333;
     color: #fff;
     transition: ease 0.3s all;
 }
-
 
 /* Header Styles */
 .page__header {
@@ -105,22 +127,25 @@ section {
     color: #fff;
 }
 
-.page__footer p{
+.page__footer p {
     color: #fff;
 }
-
 
 /* ---- Theme Rules ---- */
 /* Landing Container Styles */
 .landing__container {
     padding: 1em;
     text-align: left;
+    margin: 0 auto; /* center content */
 }
 
-@media only screen and (min-width: 35em){
+@media only screen and (min-width: 35em) {
     .landing__container {
         max-width: 50em;
         padding: 4em;
+    }
+    .navbar__menu {
+        max-width: 50em;
     }
 }
 
