@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   function addMenu() {
     for (const section of sections) {
       let coordinates = section.getBoundingClientRect();
-      console.log("Y in addMenu: "  + coordinates.y + " and top: " + coordinates.top );
+      console.log("top: "  + coordinates.top + " and bottom: " + coordinates.bottom);
       // create a navigation <li> element
       let navLi = document.createElement('li');
       // create <a> element
@@ -62,8 +62,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
       navLi.appendChild(link);
       //append <li> to <nav>
       navbar.appendChild(navLi);
-    };
-  };
+    }
+  }
 
   //Scroll to section
   function handleMenuClick(event) {
@@ -74,72 +74,65 @@ document.addEventListener("DOMContentLoaded", function(event) {
     let coordinates = section.getBoundingClientRect();
 
     console.log("window:scrollY: " + window.scrollY);
-    console.log("section Y: " + coordinates.top);
+    console.log("section.y: " + coordinates.y);
     console.log("navbar.clientHeight: " + navbar.clientHeight);
-    console.log("window.scrollY + y - navbar.clientHeight: " + (window.scrollY + coordinates.top - navbar.clientHeight));
+    console.log("window.scrollY + section.y - navbar.clientHeight: " + (window.scrollY + coordinates.top - navbar.clientHeight));
+    //scroll: window.scrollY + 
     window.scrollTo({top: window.scrollY + coordinates.y - navbar.clientHeight, behavior: 'smooth'});
     //section.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  //Check if section is the viewport 
-  function inViewport() {
-    for (section of sections) {
-      //Get the section position relative to the viewport
-      let rect = section.getBoundingClientRect();
-      console.log(rect);
-      //Check if section is inside the viewport, using the height of navbar (208px)
-      let rectInViewport =  rect.top > -navbar.clientHeight & rect.top < window.innerHeight;
-      console.log(rectInViewport);
-      if (rectInViewport) {
-        viewSection = section;
-        console.log(viewSection);
-      };
-    };
-    return viewSection;
-  };
-  //!!!!!!!!return the first section in viewport and exit function
-
-  //Add active class to the section in the viewport
-  function setActiveClass () {
-    document.addEventListener( 'scroll', event => {
-      if (viewSection) {
-        viewSection.classList.add('your-active-class');
-        
-        //add active class
-        //
-  
-      } 
-    
-    });
-
   }
 
+  //Check if section is the viewport 
+  function inViewport(section) {
+    //Get the section position relative to the viewport
+    let rect = section.getBoundingClientRect();
+    //let rectInViewport = rect.top > -navbar.clientHeight && rect.top < window.innerHeight;
+    let rectInViewport = rect.top <= window.innerHeight/2 && rect.bottom >= window.innerHeight/2;
 
+    console.log("==========");
+    console.log("section: " + section.id);
+    console.log("rec.top: " + rect.top);
+    console.log("rec.bottom: " + rect.bottom);
+    console.log("window.innerHeight/2: " + window.innerHeight/2);
+
+    return rectInViewport;
+    //Check if section is inside the viewport, using the height of navbar (208px)
+    //console.log(rect);
+    //console.log("window.innerHeight: " + window.innerHeight);
+    //Check if section is inside the viewport
+    //let rectInViewport = (rect.top >= -window.innerHeight/2 && 
+    //                      rect.bottom - rect.top <= window.innerHeight);
+                          // rect.bottom <= -window.scrollY);
+    //console.log(rect.top >= -window.innerHeight/2);
+    //console.log(rect.bottom - rect.top <= window.innerHeight);
+    
+  }
+
+  //Add active class to the section in the viewport
+  document.addEventListener('scroll', setActiveClass);
+
+  function setActiveClass(event) {
+    for (section of sections) {
+      const menuItem = document.querySelector('a[data-nav="' + section.id + '"]');  //result: "a[data-nav="section3"]"
   
-
-  //Check for active state
+      if (inViewport(section)) {
+        console.log(section.id + "is active");
+        section.classList.add('your-active-class');
+        menuItem.classList.add('active_li');
+      } else {
+        console.log(section.id + "is inactive");
+        section.classList.remove('your-active-class');
+        menuItem.classList.remove('active_li');
+      }
+    }
+  }
   
-
-
 
   //Trigger addMenu function
   addMenu();
 
-  //Trigger InViewport function
-  inViewport();
-
   //Trigger setActiveClass
-  setActiveClass();
-
-
-
-
-
-
-    
-
-
-    
+  setActiveClass();   
 });
 
 
