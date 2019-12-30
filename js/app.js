@@ -27,8 +27,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
   const navbar = document.querySelector('#navbar__list');
   console.log(navbar);
 
-  let viewSection = [];
-
   /**
    * End Global Variables
    * Start Helper Functions
@@ -39,15 +37,15 @@ document.addEventListener("DOMContentLoaded", function(event) {
   // Create the navigation menu looping through sections and grabbing data-nav
   function addMenu() {
     for (const section of sections) {
-      let coordinates = section.getBoundingClientRect();
-      console.log("top: "  + coordinates.top + " and bottom: " + coordinates.bottom);
+      let rect = section.getBoundingClientRect();
+      console.log("top: "  + rect.top + " and bottom: " + rect.bottom);
       // create a navigation <li> element
-      let navLi = document.createElement('li');
+      let menuItem = document.createElement('li');
       // create <a> element
       let link = document.createElement('a');
 
       // set class name to <li>
-      navLi.className = 'menu__link';
+      menuItem.className = 'menu__link';
       // grab section id and set as href
       link.href = '#' + section.id;
       // grab section id and set to data-nav 
@@ -59,9 +57,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
       link.addEventListener('click', handleMenuClick);
 
       //append <a> to <li>
-      navLi.appendChild(link);
+      menuItem.appendChild(link);
       //append <li> to <nav>
-      navbar.appendChild(navLi);
+      navbar.appendChild(menuItem);
     }
   }
 
@@ -71,14 +69,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
     // scroll into section
     let section = document.getElementById(event.target.dataset.nav);
     console.log(section);
-    let coordinates = section.getBoundingClientRect();
+    let rect = section.getBoundingClientRect();
 
     console.log("window:scrollY: " + window.scrollY);
-    console.log("section.y: " + coordinates.y);
+    console.log("section.y: " + rect.y);
     console.log("navbar.clientHeight: " + navbar.clientHeight);
-    console.log("window.scrollY + section.y - navbar.clientHeight: " + (window.scrollY + coordinates.top - navbar.clientHeight));
+    console.log("window.scrollY + section.y - navbar.clientHeight: " + (window.scrollY + rect.top - navbar.clientHeight));
     //scroll: window.scrollY + 
-    window.scrollTo({top: window.scrollY + coordinates.y - navbar.clientHeight, behavior: 'smooth'});
+    window.scrollTo({top: window.scrollY + rect.y - navbar.clientHeight, behavior: 'smooth'});
     //section.scrollIntoView({ behavior: 'smooth' });
   }
 
@@ -117,12 +115,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
   
       if (inViewport(section)) {
         console.log(section.id + "is active");
-        section.classList.add('your-active-class');
-        menuItem.classList.add('active_li');
+        section.classList.add('section__active');
+        menuItem.classList.add('menu__link__active');
       } else {
         console.log(section.id + "is inactive");
-        section.classList.remove('your-active-class');
-        menuItem.classList.remove('active_li');
+        section.classList.remove('section__active');
+        menuItem.classList.remove('menu__link__active');
       }
     }
   }
@@ -136,6 +134,26 @@ document.addEventListener("DOMContentLoaded", function(event) {
 });
 
 
+
+
+
+
+
+
+
+
+
+/**
+ * Define Global Variables
+ * 
+*/
+
+
+/**
+ * End Global Variables
+ * Start Helper Functions
+ * 
+*/
 
 
 
@@ -167,22 +185,5 @@ document.addEventListener("DOMContentLoaded", function(event) {
 // Set sections as active
 
 
-// var myElement = document.querySelector( 'div' );
 
-// // Listen for the scroll event
 
-// document.addEventListener( 'scroll', event => {
- 
-//   // Check the viewport status
-
-//   if( inViewport( myElement ) ){
-    
-//     myElement.style.background = 'red';
-    
-//   } else {
-    
-//     myElement.style.background = '';
-    
-//   }
-  
-// })
