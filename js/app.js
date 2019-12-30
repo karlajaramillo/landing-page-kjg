@@ -17,13 +17,11 @@
 /**
 * Define Global Variables
 */
-//Section variable
+// Select section
 const sections = document.querySelectorAll('section');
-console.log(sections);
 
-//Navigation bar variable
+// Select navigation bar <ul>
 const navbar = document.querySelector('#navbar__list');
-console.log(navbar);
 
 /**
  * End Global Variables
@@ -33,17 +31,11 @@ console.log(navbar);
 
 // Check if section is in the viewport
 function inViewport(section) {
-  //Get the section position relative to the viewport
+  // Get the section position relative to the viewport
   let rect = section.getBoundingClientRect();
-  //let rectInViewport = rect.top > -navbar.clientHeight && rect.top < window.innerHeight;
+  // Rule to check if section is in the viewport
   let rectInViewport = rect.top <= window.innerHeight/2 && rect.bottom >= window.innerHeight/2;
-
-  console.log('==========');
-  console.log('section: ' + section.id);
-  console.log('rec.top: ' + rect.top);
-  console.log('rec.bottom: ' + rect.bottom);
-  console.log('window.innerHeight/2: ' + window.innerHeight/2);
-
+  // Return true or false
   return rectInViewport;
 }
 
@@ -58,39 +50,39 @@ function inViewport(section) {
 function addMenu() {
   for (let section of sections) {
     let rect = section.getBoundingClientRect();
-    console.log('top: '  + rect.top + ' and bottom: ' + rect.bottom);
-    // create a navigation <li> element
+    // Create a navigation <li> element
     let menuItem = document.createElement('li');
-    // create <a> element
+    // Create <a> element
     let link = document.createElement('a');
 
-    // set class name to <li>
+    // Set class name to <li>
     menuItem.className = 'menu__link';
-    // grab section id and set as href
+    // Grab section id and set as href
     link.href = '#' + section.id;
-    // grab section id and set to data-nav
+    // Grab section id and set to data-nav
     link.dataset.nav = section.id;
-    //grab data-nav from section and set as innerText to <a>
+    // Grab data-nav from section and set as innerText to <a>
     link.innerText = section.dataset.nav;
 
-    //append <a> to <li>
+    // Append <a> to <li>
     menuItem.appendChild(link);
-    //append <li> to <nav>
+    // Append <li> to <nav>
     navbar.appendChild(menuItem);
   }
 }
 
-// Add class 'active' to section when in viewport
+// Add active class to section when it is in the viewport
 function setActiveClass(event) {
   for (let section of sections) {
-    const menuItem = document.querySelector('a[data-nav="' + section.id + '"]');  //result: "a[data-nav="section3"]"
-
+    // Select link <a>
+    const menuItem = document.querySelector('a[data-nav="' + section.id + '"]');  // "a[data-nav="section1"]"
+    // Set active state if section is in the viewport
     if (inViewport(section)) {
-      console.log(section.id + 'is active');
+      // Set active state to section
       section.classList.add('section__active');
+      // Set active state to link <a>
       menuItem.classList.add('menu__link__active');
     } else {
-      console.log(section.id + 'is inactive');
       section.classList.remove('section__active');
       menuItem.classList.remove('menu__link__active');
     }
@@ -101,18 +93,12 @@ function setActiveClass(event) {
 function handleMenuClick(event) {
   event.preventDefault();
   event.stopPropagation();
-  // scroll into section
+  // Scroll into section
   let section = document.getElementById(event.target.dataset.nav);
-  console.log(section);
+  // Grab section coordinates
   let rect = section.getBoundingClientRect();
-
-  console.log('window:scrollY: ' + window.scrollY);
-  console.log('section.y: ' + rect.y);
-  console.log('navbar.clientHeight: ' + navbar.clientHeight);
-  console.log('window.scrollY + section.y - navbar.clientHeight: ' + (window.scrollY + rect.top - navbar.clientHeight));
-  //scroll: window.scrollY +
+  // Add smooth behaviour
   window.scrollTo({top: window.scrollY + rect.y - navbar.clientHeight, behavior: 'smooth'});
-  //section.scrollIntoView({ behavior: 'smooth' });
 }
 
 /**
